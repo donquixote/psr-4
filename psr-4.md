@@ -1,4 +1,3 @@
-
 Definitions
 ===========
 
@@ -46,8 +45,7 @@ Specification
 1. A class MUST be under a namespace with a depth of one.
 2. A class SHOULD be under a namespace with a depth of two.
 3. A class SHOULD be defined in or made available through a class file.
-4. The library MUST specify a relationship that associates PHP namespaces with directory paths.
-  
+4. The library MUST specify a relationship that associates PHP namespaces with directory paths
   * It is recommended, but not required, that this be a 1:1 relationship.
   * It is recommended, but not required, to specify the relationship in a machine-readable and commonly-understood format.
 
