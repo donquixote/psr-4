@@ -42,9 +42,9 @@ Example: The depth of namespace `Acme\Log\Formatter\` is three.
 Specification
 =============
 
-1. A class MUST be "under" a namespace with a depth of one.
+1. A class MUST be "under" a namespace with a depth of one (or more).
 
-2. A class SHOULD be "under" a namespace with a depth of two.
+2. A class SHOULD be "under" a namespace with a depth of two (or more).
 
 3. A class SHOULD be defined in or made available through a class file.
 
