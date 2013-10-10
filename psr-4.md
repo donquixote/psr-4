@@ -1,4 +1,3 @@
-
 PSR-4: Organization of class files.
 ====================================
 
@@ -73,9 +72,8 @@ The benefit of following these requirements are:
 
 3. A class SHOULD be defined in or made available through a class file.
 
-4. The library MUST specify a relationship that associates PHP namespaces with directory paths.
-  * It is recommended, but not required, that this be a 1:1 relationship.
-  * It is recommended, but not required, to specify the relationship in a machine-readable and commonly-understood format.
+4. The library MUST specify a relationship that associates PHP namespaces with directory paths, OR it MUST make it possible to determine such a relationship.  
+  It is recommended, but not required, that this be a 1:1 relationship.
 
 5. For every class that is made available through a class file, there MUST be a namespace and a library directory, where:
   * The namespace is associated with the directory via the above relationship.
