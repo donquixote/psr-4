@@ -76,9 +76,7 @@ The benefit of following these requirements are:
   OR it MUST make it possible to determine such a relationship.  
   It is recommended, but not required, that this be a 1:1 relationship.
 
-5. A class file for a class may exist ONLY IF there are a namespace and a directory such that:
-  * The namespace is associated with the directory via the above relationship.
-  * The class is "under" the namespace.
-  * The class file is "under" the directory.
+5. A class file for a class may exist ONLY IF
+  * One of the namespaces the class is "under" is associated with one of the directories the class file is "under", via the above relationship.
   * The relative file path (relative to the directory) can be obtained from the relative class name (relative to the namespace), by replacing every namespace separator with a directory separator, and appending the ".php" suffix.
 
