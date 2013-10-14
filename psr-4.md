@@ -73,8 +73,7 @@ The benefit of following these requirements are:
 3. A class SHOULD be defined in or made available through a class file.
 
 4. The library MUST specify a relationship that associates PHP namespaces with directory paths,  
-  OR it MUST make it possible to determine such a relationship.  
-  It is recommended, but not required, that this be a 1:1 relationship.
+  OR it MUST make it possible to determine such a relationship.
 
 5. A class file for a class may exist ONLY IF
   * One of the namespaces the class is "under" is associated with one of the directories the class file is "under", via the above relationship.
