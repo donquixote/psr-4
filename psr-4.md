@@ -19,8 +19,12 @@ The benefit of following these requirements are:
 2. Definitions
 --------------------
 
-- **Library:** A collection of PHP files (and possibly other files) in a directory structure. 
-  Note: A larger project composed of multiple libraries may again be regarded as a library by itself.
+- **Library:** The subject that this specification should apply to:
+  * A collection of PHP files (and possibly other files) in a directory structure, or a subset of these files.
+  * The PHP classes that are defined in or provided by this library, or those of these PHP classes that should be subject to this spec.
+  * Optionally, documentation and meta information that belongs to the library, but might not be part of the directory structure.
+  
+  Note: A larger project composed of multiple libraries may again be regarded as a library by itself, and be subject to this spec.
 
 - **Class:** The term "class" refers to PHP classes, interfaces, and traits.  
   Note: We assume that every such class has a valid PHP class name.
