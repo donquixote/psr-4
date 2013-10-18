@@ -95,12 +95,13 @@ The benefit of following these requirements are:
 
 3. A class SHOULD be defined in or made available through a class file.
 
-4. The library MUST specify a relationship that associates PHP namespaces with library directories,  
-  OR it MUST make it possible to determine such a relationship.
+4. The library MUST specify a relationship that associates terminated namespace names
+   with terminated directory paths,  
+   OR it MUST make it possible to determine such a relationship.
 
-5. For every class and its class file, the following MUST be true:
-  * One of the namespaces of the class is associated with one of the directories of the class file, via the above relationship.
-  * The relative file path (relative to the directory) can be obtained from the relative class name (relative to the namespace), by replacing every namespace separator with a directory separator, and appending the ".php" suffix.
+5. For every class with a class file, the following MUST be true:
+   * One of the namespace prefixes of the class is associated with one of the directory prefixes of the class file, via the above relationship.
+   * The relative file path (relative to the directory) can be obtained from the relative class name (relative to the namespace), by replacing every namespace separator with a directory separator, and appending the ".php" suffix.
 
 
 
