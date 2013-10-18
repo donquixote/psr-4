@@ -26,60 +26,89 @@ The benefit of following these requirements are:
   
   Note: A larger project composed of multiple libraries may again be regarded as a library by itself, and be subject to this spec.
 
-- **Class:** The term "class" refers to PHP classes, interfaces, and traits.  
-  Note: We assume that every such class has a valid PHP class name.
+- **class**: The term _class_ refers to PHP classes, interfaces, traits, and
+  similar future resource definitions.
 
-- **Fully Qualified Class Name:** The full namespace and class name of a class, without a leading namespace separator.
-  Example: `Acme\Log\Formatter\LineFormatter`.
+- **namespace**: A PHP namespace, as is syntactically valid after the
+  [PHP `namespace` keyword](http://www.php.net/manual/en/language.namespaces.definition.php).
+  `\` by itself is not an acceptable _namespace_ within this PSR.
 
-- **Root namespace:** The PHP namespace that is the parent of all other PHP namespaces, and that in PHP is specified by `\` (a single namespace separator).
+- **namespace separator**: The PHP namespace separator symbol `\` (backslash).
 
-- **Terminated Namespace Name:** The string representing a full PHP namespace, without a leading namespace separator, but with a trailing namespace separator. Only the root namespace is specified as an empty string, without a trailing namespace separator.  
-  Example 1: `Acme\Log\Formatter\` is the terminated namespace name of `Acme\Log\Formatter`.
+- **fully qualified class name**: A full namespace and class name, such as
+  `\Acme\Log\Writer\FileWriter`. As defined by
+  [PHP's name resolution rules](http://php.net/manual/en/language.namespaces.rules.php),
+  the _fully qualified class name_ MUST include the leading namespace
+  separator.
 
-- **Class File:** For a given class, a "class file" is a file that, if included by a PHP script, will make this class available.
+- **autoloadable class**: Any class in the library intended for autoloading.  
+  (Classes not intended for autoloading are not covered by this term.)
 
-- **Class File path:** For a given class file, this is the path to that file relative to the library root.
+- **autoloadable class name**: The same as the fully qualified class name,
+  but without a leading namespace separator.  
+  Given a _fully qualified class name_ of `\Acme\Log\Writer\FileWriter`,
+  the _autoloadable class name_ is `Acme\Log\Writer\FileWriter`.
+  Typically, this is the value sent to the [__autoload()][] function
+  and to callbacks registered with [spl_autoload_register()][].
+
+- **terminated namespace name:** A namespace with an appended namespace separator.  
+  Example: `Acme\Log\Formatter\` is the terminated namespace name of `Acme\Log\Formatter`.
+
+- **namespace prefix:** Any prefix of an autoloadable class name that is a terminated namespace name.  
+  Example: Given an _autoloadable class name_ of `Acme\Log\Writer\FileWriter`,
+  the _namespace prefixes_ may be `Acme\`, `Acme\Log\`, and `Acme\Log\Writer\`.
+
+- **class file:** For a given class, a "class file" is a file that, if included by a PHP script, will make this class available.
+
+- **class file path:** For a given class file, this is the path to that file relative to the library root.
   Example: `src/Formatter/LineFormatter.php`
 
-- **Directory Path:** Given a directory within the library, this is the path to that directory relative to the library root, without a trailing directory separator.
+- **directory path:** Given a directory within the library, this is the path to that directory relative to the library root, without a trailing directory separator.
 
-- **Terminated Directory Path:** Directory path, as above, but with a trailing directory separator. Only the library root is specified as an empty string, without a trailing directory separator.  
+- **terminated directory path:** Directory path, as above, but with a trailing directory separator. Only the library root is specified as an empty string, without a trailing directory separator.  
   Example: `src/Formatter/`.
 
-- **"under" a namespace:** A class or namespace is "under" another namespace, if it has the terminated namespace name of that other namespace as a prefix.  
-  A namespace is NOT "under" _itself_.  
-  Note: In other words, the other namespace is a direct or indirect "parent".  
-  Note: Every namespace is "under" the root namespace, except for the root namespace itself.
+- **directory prefix:** Any prefix of a file or directory path that is a terminated directory path.
 
-- **"under" a directory:** A file or directory is "under" another directory, if it has the terminated directory path of that other directory as a prefix.
-  A directory is NOT "under" _itself_.  
-  Note: In other words, the other directory is a direct or indirect "parent".  
-  Note: Every library directory is "under" the library root, except the library root itself.
+- **relative class name:** For a class and one of its namespace prefixes, the relative class name
+  (relative to that namespaceprefix ) is the part of the autoloadable class name that follows
+  the namespace prefix.  
+  Example: For a class `Acme\Log\Formatter\LineFormatter` and the namespace prefix `Acme\Log\`,
+  the relative class name is `Formatter\LineFormatter`.
 
-- **Relative Class Name:** For a class that is "under" a namespace, the relative class name (relative to that namespace) is the part of the fully qualified class name that follows the terminated namespace name.  
-  Example: For a class `Acme\Log\Formatter\LineFormatter` being "under" the namespace `Acme\Log\`, the relative class name is `Formatter\LineFormatter`.
+- **relative file path:** For a file and one of its directory prefixes, the relative file path
+  (relative to that directory) is the part of the file path that follows the terminated
+  directory path.  
+  Example: For a file `src/Formatter/LineFormatter.php` and a directory prefix `src/`,
+  the relative file path is `Formatter/LineFormatter.php`.
 
-- **Relative File Path:** For a file that is "under" a directory, the relative file path (relative to that directory) is the part of the file path that follows the terminated directory path.  
-  Example: For a file `src/Formatter/LineFormatter.php` being "under" the directory `src/`, the relative file path is `Formatter/LineFormatter.php`.
-
-- **Namespace Depth:** The "depth" of a namespace is the number of parent namespaces it is "under".  
-  Example: The namespace `Acme\Log\Formatter\` has a depth of 3.
+- **Namespace Depth:** The "depth" of a namespace is the number of namespace separators in the terminated namespace name.  
+  Example: The namespace with the terminated name of `Acme\Log\Formatter\` has a depth of 3.
 
 
 3. Specification
 --------------------
 
-1. A class MUST be "under" a namespace with a depth of one (or more).
+1. Every class MUST be in a namespace of at least depth one.
 
-2. A class SHOULD be "under" a namespace with a depth of two (or more).
+2. Every class SHOULD be in a namespace of at least depth two.
 
 3. A class SHOULD be defined in or made available through a class file.
 
-4. The library MUST specify a relationship that associates PHP namespaces with directory paths,  
+4. The library MUST specify a relationship that associates PHP namespaces with library directories,  
   OR it MUST make it possible to determine such a relationship.
 
-5. A class file for a class may exist ONLY IF
-  * One of the namespaces the class is "under" is associated with one of the directories the class file is "under", via the above relationship.
+5. For every class and its class file, the following MUST be true:
+  * One of the namespaces of the class is associated with one of the directories of the class file, via the above relationship.
   * The relative file path (relative to the directory) can be obtained from the relative class name (relative to the namespace), by replacing every namespace separator with a directory separator, and appending the ".php" suffix.
 
+
+
+4. Notes
+-------------------------------
+
+Needs work!
+
+
+5. Examples
+---------------------------------
